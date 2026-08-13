@@ -8,7 +8,7 @@
 # Project metadata (used for documentation / review)
 # ======================================================
 project:
-  title: "neuron CMOS"        # Project title (e.g. "Simple CPU", "PLL", "ADC")
+  title: "Semiconductor Design Summer Camp" # Project title (e.g. "Simple CPU", "PLL", "ADC")
   author: "Kuniaki Fujimoto"       # Your name
   discord: "fujimoto_kuniaki"      # Optional: Discord username (for support / communication)
   description: "Tokai Univ. Seisho High School"  # Short one-line description
