@@ -1,9 +1,9 @@
 * Strict-port aligned reference netlist for TR-1um OpenSUSI
 * Top/subcircuit pin order aligned with the KLayout-extracted netlist.
 
-.subckt tr_1um_fujimoto_kuniaki P1 P10 P11 P12 P13 P14 P15 P2 P3 P4 P5 P6 P7 P9 VDD VSS
+.subckt tr_1um_fujimoto_kuniaki2 P1 P10 P11 P12 P13 P14 P15 P2 P3 P4 P5 P6 P7 P9 VDD VSS
 x1 P2 P9 P12 P6 P10 P11 P13 P14 P4 P15 P7 P1 P3 P5 VDD VSS OSS_FRAME
-.ends tr_1um_fujimoto_kuniaki
+.ends tr_1um_fujimoto_kuniaki2
 
 .subckt OSS_FRAME P2 P9 P12 P6 P10 P11 P13 P14 P4 P15 P7 P1 P3 P5 VDD VSS
 x1  P2  VDD VSS OSS_ESD_5V_ANA
