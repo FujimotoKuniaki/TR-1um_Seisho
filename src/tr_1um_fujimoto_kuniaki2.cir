@@ -1,8 +1,27 @@
-* Strict-port aligned reference netlist for TR-1um OpenSUSI
-* Top/subcircuit pin order aligned with the KLayout-extracted netlist.
+* tr_1um_fujimoto_kuniaki2.cir  OpenSUSI TR-1um MPW  (strict-port aligned)
+* 東海大学附属熊本星翔高等学校: student inverters x5 (shared input) + 4-input direct nuMOS neuron with calibration
 
 .subckt tr_1um_fujimoto_kuniaki2 P1 P10 P11 P12 P13 P14 P15 P2 P3 P4 P5 P6 P7 P9 VDD VSS
 x1 P2 P9 P12 P6 P10 P11 P13 P14 P4 P15 P7 P1 P3 P5 VDD VSS OSS_FRAME
+* student inverters: IN=P3 (shared), OUT1..5 = P4 P5 P6 P7 P2
+xinv1 VDD P4 P3 VSS inv_ckb
+xinv2 VDD P5 P3 VSS inv_ckb
+xinv3 VDD P6 P3 VSS inv_ckb
+xinv4 VDD P7 P3 VSS inv_ckb
+xinv5 VDD P2 P3 VSS inv_ckb
+* mini neuron: IN1..IN4 = P11 P12 P13 P14 (direct to capacitor bottom electrodes), CAL=P9, FG_MON=P10, OUT=P15
+XC1 fg P11 VSS F_CSIO x=111u y=110u A=12.21n P=442u
+XC2 fg P12 VSS F_CSIO x=111u y=110u A=12.21n P=442u
+XC3 fg P13 VSS F_CSIO x=111u y=110u A=12.21n P=442u
+XC4 fg P14 VSS F_CSIO x=111u y=110u A=12.21n P=442u
+xjudge fg P10 VDD VSS judge
+MTHP vth fg VDD VDD PMOS w=20u l=5u
+MTHN vth fg VSS VSS NMOS w=5u l=5u
+MCALP vth P9 fg VDD PMOS w=5u l=5u
+MCALN vth calb fg VSS NMOS w=5u l=5u
+MCBP calb P9 VDD VDD PMOS w=20u l=5u
+MCBN calb P9 VSS VSS NMOS w=5u l=5u
+xinvo VDD P15 vth VSS inv_ckb
 .ends tr_1um_fujimoto_kuniaki2
 
 .subckt OSS_FRAME P2 P9 P12 P6 P10 P11 P13 P14 P4 P15 P7 P1 P3 P5 VDD VSS
@@ -22,19 +41,33 @@ x13 P3  VDD VSS OSS_ESD_5V_ANA
 x14 P5  VDD VSS OSS_ESD_5V_ANA
 x19 VDD VSS OSS_ESD_5V_VDD
 x20 VDD VSS OSS_ESD_5V_VSS
-.ends OSS_FRAME
+.ends
 
 .subckt OSS_ESD_5V_VDD VDD VSS
 MXM1 VDD VDD VDD VDD PMOS w=500u l=2u
 MXM2 VDD VSS VSS VSS NMOSE w=500u l=2u
-.ends OSS_ESD_5V_VDD
+.ends
 
 .subckt OSS_ESD_5V_VSS VDD VSS
 MXM1 VSS VDD VDD VDD PMOS w=500u l=2u
 MXM2 VSS VSS VSS VSS NMOSE w=500u l=2u
-.ends OSS_ESD_5V_VSS
+.ends
 
 .subckt OSS_ESD_5V_ANA PAD VDD VSS
 MXM1 PAD VDD VDD VDD PMOS w=500u l=2u
 MXM2 PAD VSS VSS VSS NMOSE w=500u l=2u
-.ends OSS_ESD_5V_ANA
+.ends
+
+.subckt judge fg fgmon vdd vss
+MSF vdd fg fgmon vss NMOS w=20u l=5u
+MLD fgmon nb vss vss NMOS w=5u l=5u
+MDIO nb nb vss vss NMOS w=60u l=5u
+MB nb vss vdd vdd PMOS w=5u l=5u
+.ends
+
+.subckt inv_ckb vdd clkb clk vss
+MXM1 clkb clk vss vss NMOS w=20u l=5u
+MXM2 clkb clk vdd vdd PMOS w=80u l=5u
+.ends
+
+.end
